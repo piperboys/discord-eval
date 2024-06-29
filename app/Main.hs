@@ -1,5 +1,5 @@
 module Main (main) where
 
-import Lib ()
+import Lib (stateExample)
 
-main = return ()
+main = stateExample
