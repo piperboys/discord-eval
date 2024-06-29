@@ -4,32 +4,30 @@ cabal-version: 2.2
 --
 -- see: https://github.com/sol/hpack
 
-name:           repl-piper
+name:           discord-eval
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/repl-piper#readme>
-homepage:       https://github.com/githubuser/repl-piper#readme
-bug-reports:    https://github.com/githubuser/repl-piper/issues
+description:    Please see the README on GitHub at <https://github.com/piperboys/discord-eval#readme>
+homepage:       https://github.com/piperboys/discord-eval#readme
+bug-reports:    https://github.com/piperboys/discord-eval/issues
 author:         Author name here
 maintainer:     example@example.com
 copyright:      2024 Author name here
 license:        BSD-3-Clause
-license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
-    CHANGELOG.md
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/repl-piper
+  location: https://github.com/piperboys/discord-eval
 
 library
   exposed-modules:
       Lib
   other-modules:
-      Paths_repl_piper
+      Paths_discord_eval
   autogen-modules:
-      Paths_repl_piper
+      Paths_discord_eval
   hs-source-dirs:
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
@@ -40,37 +38,37 @@ library
     , unliftio
   default-language: Haskell2010
 
-executable repl-piper-exe
+executable discord-eval-exe
   main-is: Main.hs
   other-modules:
-      Paths_repl_piper
+      Paths_discord_eval
   autogen-modules:
-      Paths_repl_piper
+      Paths_discord_eval
   hs-source-dirs:
       app
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , discord-eval
     , discord-haskell
-    , repl-piper
     , text
     , unliftio
   default-language: Haskell2010
 
-test-suite repl-piper-test
+test-suite discord-eval-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Paths_repl_piper
+      Paths_discord_eval
   autogen-modules:
-      Paths_repl_piper
+      Paths_discord_eval
   hs-source-dirs:
       test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , discord-eval
     , discord-haskell
-    , repl-piper
     , text
     , unliftio
   default-language: Haskell2010

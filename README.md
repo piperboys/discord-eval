@@ -1,1 +1,1 @@
-# repl-piper
+# Piper Evaluation Discord Bot
