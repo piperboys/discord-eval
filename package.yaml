@@ -23,6 +23,7 @@ dependencies:
 - discord-haskell
 - unliftio
 - text
+- process
 
 ghc-options:
 - -Wall

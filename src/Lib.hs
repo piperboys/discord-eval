@@ -9,6 +9,7 @@ import UnliftIO (liftIO)
 import Control.Monad (when, void)
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
+import System.Process (readCreateProcess, shell)
 
 import Discord
 import Discord.Types
@@ -28,15 +29,21 @@ stateExample = do
 
     TIO.putStrLn t
 
+sanitize :: String -> String
+sanitize = tail . init
+
+format :: String -> String
+format s = "```python\n" ++ unlines (drop 3 $ lines s) ++ "\n```"
+
 parseMessage :: Message -> (T.Text, [T.Text])
 parseMessage m = (T.tail (head content), tail content)
-    where content = T.words $ messageContent m
+    where content = T.words $ T.replace "`" "" (messageContent m)
 
 eventHandler :: Event -> DiscordHandler ()
 eventHandler event = case event of
     MessageCreate m -> when (not (fromBot m) && isCommand m) $ do
         let parsedMessage = parseMessage m
-        liftIO $ putStrLn $ "Message received: " <> T.unpack (messageContent m)
+        liftIO $ putStrLn $ "Command received: " <> T.unpack (messageContent m)
         messageHandler m parsedMessage
 
     GuildCreate g _ -> do
@@ -46,10 +53,20 @@ eventHandler event = case event of
 
 messageHandler :: Message -> (T.Text, [T.Text]) -> DiscordHandler ()
 messageHandler m (command, args) = do
-        liftIO $ putStrLn $ T.unpack command
         case command of
             "eval" -> do 
-                void $ restCall (R.CreateMessage (messageChannelId m) $ T.unwords args )
+                let input = sanitize (show (T.unpack (T.replace ";" "\n" (T.unwords args))))
+                output <- liftIO $ readCreateProcess (shell $ "echo '" ++ input ++ "' | piper -repl") ""
+                void $ restCall (R.CreateMessage (messageChannelId m) $ T.pack (format output))
+
+            "args" -> do 
+                let input = sanitize (show (T.unpack (T.replace ";" "\n" (T.unwords args))))
+                liftIO $ print args
+                liftIO $ putStrLn input
+
+                void $ restCall (R.CreateMessage (messageChannelId m) $ T.pack input)
+
+
             _ -> return ()
 
 fromBot :: Message -> Bool
